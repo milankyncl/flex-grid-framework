@@ -33,8 +33,10 @@ gulp.task('process_scss', function () {
             .on('error', onError)
             .pipe(cssmin())
             .on('error', onError)
-            .pipe(rename({suffix: '.min'}))
-            .pipe(gulp.dest('./assets/build/css'));
+            .pipe(rename({
+                suffix: '.min'
+            }))
+            .pipe(gulp.dest('./dist'));
 });
 
 function onError(err) {
