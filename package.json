@@ -1,0 +1,31 @@
+{
+    "name": "flex-grid-framework",
+    "licences": [
+        "MIT"
+    ],
+    "version": "1.0.0",
+    "keywords": [
+        "css",
+        "framework",
+        "flex"
+    ],
+    "author": "Milan Kyncl <kyncl@creativecompany.cz>",
+    "contributors": [],
+    "dependencies": {
+        "autoprefixer": "^7.1.1",
+        "cssnano": "^3.10.0"
+    },
+    "devDependencies": {
+        "gulp": "^3.9.1",
+        "gulp-cssmin": "^0.1.7",
+        "gulp-minify": "0.0.14",
+        "gulp-postcss": "^7.0.0",
+        "gulp-rename": "^1.2.2",
+        "gulp-sass": "^3.1.0"
+    },
+    "description": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/milankyncl/flex-grid-framework.git"
+    }
+}
