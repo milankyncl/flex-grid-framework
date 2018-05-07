@@ -104,11 +104,10 @@ $columnGasp: 16px;
 
         $width: (100% / $columns) * $i;
 
-        flex-basis: $width;
-        max-width: $width;
+        flex-basis: calc(#{$width} - #{$columnGasp / 2});
+        max-width: calc(#{$width} - #{$columnGasp / 2});
 
-        padding-left: $columnGasp / 2;
-        padding-right: $columnGasp / 2;
+        margin: 0 ($columnGasp / 2);
     }
 }
 
@@ -122,8 +121,8 @@ $columnGasp: 16px;
 
                 $width: (100% / $columns) * $i;
 
-                flex-basis: $width;
-                max-width: $width;
+                flex-basis: calc(#{$width} - #{$columnGasp / 2});
+                max-width: calc(#{$width} - #{$columnGasp / 2});
             }
         }
     }
