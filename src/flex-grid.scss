@@ -1,29 +1,76 @@
-
 /**
  *  Flex Grid Framework
  *  -------------------
  *  Super minimalistic CSS flex framework for responsive-friendly websites.
  *
  *  @author milankyncl <kontakt@milankyncl.cz>
- *  @version 1.0.0
+ *  @version 1.1.0
  */
 
 /**
  * Some settings here...
  */
 
-$columns: 24; // Number of columns
-$indentation: 10; // Number of max. indentation in REM unit for padding and margin
+// Number of columns
+$columns: 24 !default;
 
-$breakpoints: ( // Breakpoints for responsive layout
-        lg: 1440px,
-        md: 1024px,
-        sm: 768px,
-        xs: 560px
-);
+// Gasp between columns in grid
+$columnGasp: 1rem !default;
 
-$columnGasp: 16px;
+// Number of max. indentation in REM unit for padding and margin
+$indentation: 10 !default;
 
+// Breakpoints
+$breakpoints: (
+    lg: 1440px,
+    md: 1024px,
+    sm: 768px,
+    xs: 560px
+) !default;
+
+/**
+ * Mixin definitions
+ */
+
+@mixin column($size, $breakpoint: false) {
+
+    @if $size < 0 or $size > $columns {
+
+        @error "Column size must be between 0 and " + $size;
+    }
+
+    $width: (100% / $columns) * $size;
+
+    @if $breakpoint == false {
+
+        flex-basis: $width;
+        max-width: $width;
+    }
+
+    @if $breakpoint != false {
+
+        $breakpointWidth: false;
+
+        @each $breakpointIndex, $max-width in $breakpoints {
+
+            @if $breakpointIndex == $breakpoint {
+
+                $breakpointWidth: $max-width;
+            }
+        }
+
+        @if $breakpointWidth == false {
+
+            @error "Invalid breakpoint name provided: #{$breakpoint}";
+        }
+
+        @media screen and (max-width: $breakpointWidth) {
+
+            flex-basis: $width;
+            max-width: $width;
+        }
+    }
+}
 
 /**
  * Now the code.. (:
@@ -33,10 +80,12 @@ $columnGasp: 16px;
 
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+
     margin-left: -($columnGasp / 2);
     margin-right: -($columnGasp / 2);
 
-    &--vertical-center {
+    &--v-center {
 
         align-items: center;
     }
@@ -61,7 +110,7 @@ $columnGasp: 16px;
         justify-content: center;
     }
 
-    &--space-between{
+    &--space-between {
 
         justify-content: space-between;
     }
@@ -76,13 +125,32 @@ $columnGasp: 16px;
         align-items: stretch;
     }
 
-    &--wrap {
+    &--nowrap {
 
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+    }
+
+    &--wrap-reverse {
+
+        flex-wrap: wrap-reverse;
+    }
+
+    &--line-gasp {
+
+        > .col {
+
+            padding-top: $columnGasp / 2;
+            padding-bottom: $columnGasp / 2;
+        }
     }
 }
 
 .col {
+
+    flex-basis: auto;
+
+    padding-left: $columnGasp / 2;
+    padding-right: $columnGasp / 2;
 
     box-sizing: border-box;
 
@@ -90,27 +158,24 @@ $columnGasp: 16px;
 
         flex: 1;
     }
-
-    &--auto {
-
-        flex-basis: auto;
-    }
 }
 
+// Define col and offset sizes
 
 @for $i from 0 through $columns {
 
     .col--#{$i} {
 
-        $width: (100% / $columns) * $i;
+        @include column($i);
+    }
 
-        flex-basis: $width;
-        max-width: $width;
+    .offset--#{$i} {
 
-        padding-left: $columnGasp / 2;
-        padding-right: $columnGasp / 2;
+        margin-left: (100% / $columns) * $i;
     }
 }
+
+// Now breakpoints magic
 
 @each $breakpoint, $max-width in $breakpoints {
 
@@ -118,22 +183,31 @@ $columnGasp: 16px;
 
         .col--#{$breakpoint}-#{$i} {
 
+            @include column($i, $breakpoint);
+        }
+
+        .offset--#{$breakpoint}-#{$i} {
+
             @media all and (max-width: $max-width) {
 
-                $width: (100% / $columns) * $i;
-
-                flex-basis: $width;
-                max-width: $width;
+                margin-left: (100% / $columns) * $i;
             }
         }
     }
 }
+
+// Paddings and Margins
 
 @for $i from 0 through $indentation {
 
     .p-t-#{$i} {
 
         padding-top: #{$i}rem;
+    }
+
+    .p-t-#{$i}-h {
+
+        padding-top: #{$i - .5}rem;
     }
 
     .p-b-#{$i} {
@@ -156,9 +230,19 @@ $columnGasp: 16px;
         margin-bottom: #{$i}rem;
     }
 
+    .m-b-#{$i}-h {
+
+        margin-bottom: #{$i - .5}rem;
+    }
+
     .m-t-#{$i} {
 
         margin-top: #{$i}rem;
+    }
+
+    .m-t-#{$i}-h {
+
+        margin-top: #{$i - .5}rem;
     }
 
     .m-r-#{$i} {
@@ -171,6 +255,8 @@ $columnGasp: 16px;
         margin-left: #{$i}rem;
     }
 }
+
+// Breakpoint magic for paddings and margins
 
 @each $breakpoint, $max-width in $breakpoints {
 
@@ -235,10 +321,28 @@ $columnGasp: 16px;
 
         .m-l-#{$breakpoint}-#{$i} {
 
-            @media(max-width: $max-width) {
+            @media all and (max-width: $max-width) {
 
                 margin-left: #{$i}rem;
             }
+        }
+    }
+}
+
+// Hidden, visible state
+
+@each $breakpoint, $max-width in $breakpoints {
+
+    @media all and (max-width: $max-width) {
+
+        .hidden-#{$breakpoint} {
+
+            display: none;
+        }
+
+        .visible-#{$breakpoint} {
+
+            display: block;
         }
     }
 }
