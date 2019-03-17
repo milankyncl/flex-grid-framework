@@ -45,6 +45,47 @@ options: list
 
 ## How to use
 
+### Rows
+
+Rows are used to wrapper columns using `row` class you cant set up row and write down columns in. There is a plenty of modifications for rows:
+
+**Vertical aligning**
+
+- `row--v-center` - columns will be centered vertically,
+- `row--v-top` - columns will be aligned to top vertically, (defaultly)
+- `row--v-bottom` - columns will be aligned to bottom vertically,
+- `row--stretch` - columns will be centered vertically and they will have same height,
+
+**Horizontal aligning**
+
+- `row--h-center` - columns will be centered horizontally,
+- `row--h-left` - columns will be aligned left horizontally, (defaultly)
+- `row--h-right` - columns will be aligned right horizontally,
+- `row--space-between` - columns will be separated with spaces between,
+- `row--space-around` - every columns will be separated by space (event at sides of row)
+
+**Wrapping**
+
+- `row--wrap-reverse` - row will wrap with reversed order
+- `row--nowrap` - row will not wrap at all
+
+Example:
+
+```html
+<div class="row row--v-top">
+    <div class="col">
+        Column with auto-width.
+    </div>
+    <div class="col col--5">
+        Column with size of 5 units.
+    </div>
+    <div class="col col--fill">
+        Column filling the remaining width.
+    </div>
+</div
+
+```
+
 ### Columns
 
 There are 2 ways how to create columns in your code:
@@ -55,10 +96,13 @@ There are 2 ways how to create columns in your code:
     @include column($size, $breakpointName) // e.g. column(5, 'lg')
     ```
 
-- Using a builded classes by `col--{$size}` and with breakpoint `col--{$breakpointName}-{$size}`. If you wish to use predefined column attributes (padding, box-sizing) you need to add `col` class to your element.
+- Using a builded classes by `col--{$size}` and with breakpoint `col--{$breakpointName}-{$size}`. If you wish to use predefined column attributes (padding, box-sizing) you need to add `col` class to your element. To fill remaining width of row you can use `col--fill` class.
 
     ```html
-    <div class="col col--24 col--md-18 col--xs-16"></div>
+    <div class="row">
+        <div class="col col--20 col--md-18 col--xs-16">Predefined width!</div>
+        <div class="col col--fill">Will fill the rest of width...</div>
+    </div>
     ```
 
 ## License
