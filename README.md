@@ -1,6 +1,6 @@
 # Flex Grid Framework
 
-Super minimalistic CSS flex grid framework for easy manipulation with friendly-responsive websites.
+Super minimalistic CSS (SCSS) flex grid framework for easy manipulation with responsive-friendly websites.
 
 ## Configuring
 
@@ -52,7 +52,7 @@ There are 2 ways how to create columns in your code:
 - Using a mixin which provides an option to define size of the column depending on breakpoint
 
     ```css
-    @extend column($size, $breakpointName) // e.g. column(5, 'lg')
+    @include column($size, $breakpointName) // e.g. column(5, 'lg')
     ```
 
 - Using a builded classes by `col--{$size}` and with breakpoint `col--{$breakpointName}-{$size}`. If you wish to use predefined column attributes (padding, box-sizing) you need to add `col` class to your element.
